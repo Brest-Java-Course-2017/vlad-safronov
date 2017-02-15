@@ -4,11 +4,16 @@ import com.epam.test.model.User;
 
 import java.util.List;
 
-/**
- * Created by vlad on 15.2.17.
- */
-
 public interface UserDao {
-   List<User> getAllUsers();
-   User getUserById();
+
+    public List<User> getAllUsers();
+
+    public User getUserById(Integer userId);
+
+    public Integer addUser(User user);
+
+    public void updateUser(User user);
+
+    public void deleteUser(Integer userId);
+
 }

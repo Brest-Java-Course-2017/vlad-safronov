@@ -47,6 +47,16 @@ public class User {
         this.description = description;
     }
 
+    public User() {
+    }
+
+    public User(Integer userId, String login, String password, String description) {
+        this.userId = userId;
+        this.login = login;
+        this.password = password;
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

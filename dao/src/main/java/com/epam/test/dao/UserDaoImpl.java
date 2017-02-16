@@ -1,11 +1,10 @@
 package com.epam.test.dao;
 
 import com.epam.test.model.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,12 +17,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Dao implementation.
  */
+
 public class UserDaoImpl implements UserDao {
+    @Value("${sql.getAllUsers}")
+    private String GET_ALL_USERS_SQL;
+    @Value("${sql.getUserById}")
+    private String GET_USER_BY_ID_SQL;
+    @Value("${sql.addUser}")
+    private String ADD_USER_SQL;
+    @Value("${sql.updateUser}")
+    private String UPDATE_USER_SQL;
+    @Value("${sql.deleteUserById}")
+    private String DELETE_USER_BY_ID_SQL;
+    @Value("${sql.countOfUsersWithId}")
+    private String COUNT_OF_USERS_WITH_ID_SQL;
+
+    private static final String USER_ID = "user_id";
+    private static final String LOGIN ="login";
+    private static final String PASSWORD ="password";
+    private static final String DESCRIPTION="description";
+    public static final String ERR_USER_IS_NOT_EXIST="User is not exist";
+
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -33,10 +51,11 @@ public class UserDaoImpl implements UserDao {
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
+
     @Override
     public List<User> getAllUsers() {
-        String getAllUsersSql = "select user_id, login, password, description from app_user";
-        return jdbcTemplate.query(getAllUsersSql, new UserRowMapper());
+
+        return jdbcTemplate.query(GET_ALL_USERS_SQL, new UserRowMapper());
     }
 
     @Override
@@ -45,8 +64,8 @@ public class UserDaoImpl implements UserDao {
         User user = null;
         try {
              user = namedParameterJdbcTemplate.queryForObject(
-                    "select user_id, login, password, description from app_user" +
-                            " where user_id = :p_user_id", namedParameters, new UserRowMapper());
+                    GET_USER_BY_ID_SQL, namedParameters, new UserRowMapper());
+
         }catch(EmptyResultDataAccessException e){
 
         }
@@ -56,28 +75,32 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Integer addUser(User user) {
         SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(user);
-        String addUserSql = "INSERT INTO app_user (login,password,description) " +
-                            "VALUES (:Login,:Password,:Description)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(addUserSql, namedParameters, keyHolder);
+        namedParameterJdbcTemplate.update(ADD_USER_SQL, namedParameters, keyHolder);
         return keyHolder.getKey().intValue();
     }
 
+
     @Override
-    public void updateUser(User user) {
+    public void updateUser(User user) throws Exception {
         SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(user);
-        String updateUserSql = "UPDATE app_user SET " +
-                "login=:login,password=:password,description=:description " +
-                "WHERE user_id=:userId";
-        namedParameterJdbcTemplate.update(updateUserSql,namedParameters);
+        if(!isUserExist(user.getUserId())) throw new Exception(ERR_USER_IS_NOT_EXIST);
+        namedParameterJdbcTemplate.update(UPDATE_USER_SQL,namedParameters);
+    }
+    private boolean isUserExist(Integer userId){
+        int count = jdbcTemplate.queryForObject
+                (COUNT_OF_USERS_WITH_ID_SQL,new Object[]{userId},Integer.class);
+        return (count!=0);
     }
 
     @Override
-    public void deleteUser(Integer userId) {
+    public void deleteUser(Integer userId) throws Exception {
+        if(!isUserExist(userId)) throw new Exception(ERR_USER_IS_NOT_EXIST);
+
         Object[] params = {userId};
         int[] types = {Types.BIGINT};
-        String deleteUserByIdSql = "DELETE FROM app_user WHERE user_id=?";
-        jdbcTemplate.update(deleteUserByIdSql,params,types);
+
+        jdbcTemplate.update(DELETE_USER_BY_ID_SQL,params,types);
     }
 
     private class UserRowMapper implements RowMapper<User> {
@@ -85,10 +108,10 @@ public class UserDaoImpl implements UserDao {
         @Override
         public User mapRow(ResultSet resultSet, int i) throws SQLException {
             User user = new User(
-                    resultSet.getInt("user_id"),
-                    resultSet.getString("login"),
-                    resultSet.getString("password"),
-                    resultSet.getString("description"));
+                    resultSet.getInt(USER_ID),
+                    resultSet.getString(LOGIN),
+                    resultSet.getString(PASSWORD),
+                    resultSet.getString(DESCRIPTION));
             return user;
         }
     }

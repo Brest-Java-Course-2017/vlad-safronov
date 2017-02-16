@@ -12,8 +12,8 @@ public interface UserDao {
 
     public Integer addUser(User user);
 
-    public void updateUser(User user);
+    public void updateUser(User user) throws Exception;
 
-    public void deleteUser(Integer userId);
+    public void deleteUser(Integer userId) throws Exception;
 
 }

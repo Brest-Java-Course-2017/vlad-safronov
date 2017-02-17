@@ -1,6 +1,8 @@
 package com.epam.test.dao;
 
 import com.epam.test.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,6 +25,7 @@ import java.util.List;
  */
 
 public class UserDaoImpl implements UserDao {
+
     @Value("${sql.getAllUsers}")
     private String GET_ALL_USERS_SQL;
     @Value("${sql.getUserById}")
@@ -42,6 +45,7 @@ public class UserDaoImpl implements UserDao {
     private static final String DESCRIPTION="description";
     public static final String ERR_USER_IS_NOT_EXIST="User is not exist";
 
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -54,7 +58,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-
         return jdbcTemplate.query(GET_ALL_USERS_SQL, new UserRowMapper());
     }
 
@@ -104,7 +107,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     private class UserRowMapper implements RowMapper<User> {
-
         @Override
         public User mapRow(ResultSet resultSet, int i) throws SQLException {
             User user = new User(

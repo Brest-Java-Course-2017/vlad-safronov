@@ -15,6 +15,11 @@ public class User {
 
     private String description;
 
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+
     public Integer getUserId() {
         return userId;
     }

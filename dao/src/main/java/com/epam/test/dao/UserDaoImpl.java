@@ -28,14 +28,19 @@ public class UserDaoImpl implements UserDao {
 
     @Value("${sql.getAllUsers}")
     private String GET_ALL_USERS_SQL;
+
     @Value("${sql.getUserById}")
     private String GET_USER_BY_ID_SQL;
+
     @Value("${sql.addUser}")
     private String ADD_USER_SQL;
+
     @Value("${sql.updateUser}")
     private String UPDATE_USER_SQL;
+
     @Value("${sql.deleteUserById}")
     private String DELETE_USER_BY_ID_SQL;
+
     @Value("${sql.countOfUsersWithId}")
     private String COUNT_OF_USERS_WITH_ID_SQL;
 
@@ -43,6 +48,7 @@ public class UserDaoImpl implements UserDao {
     private static final String LOGIN ="login";
     private static final String PASSWORD ="password";
     private static final String DESCRIPTION="description";
+
     public static final String ERR_USER_IS_NOT_EXIST="User is not exist";
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -53,6 +59,9 @@ public class UserDaoImpl implements UserDao {
     public UserDaoImpl(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
+    public User getUserByLogin(String login){
+        return null;
     }
 
 
@@ -81,6 +90,7 @@ public class UserDaoImpl implements UserDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_USER_SQL, namedParameters, keyHolder);
         return keyHolder.getKey().intValue();
+        //TODO добавить проверку на отсутствие установленного id
     }
 
 

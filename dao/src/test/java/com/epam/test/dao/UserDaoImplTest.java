@@ -2,6 +2,7 @@ package com.epam.test.dao;
 
 
 import com.epam.test.model.User;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -9,12 +10,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:test-spring-dao.xml"})
+@Transactional
 public class UserDaoImplTest{
 
     public static final User userAddTest = new User
@@ -85,6 +89,7 @@ public class UserDaoImplTest{
         assertEquals(1,sizeBeforeDelete-sizeAfterDelete);
         assertEquals(null,userDao.getUserById(COUNT_OF_ALL_USERS));
 
+        //TODO вынести негативные сценарии в отдельные тесты
 
         thrown.expect(Exception.class);
         thrown.expectMessage(UserDaoImpl.ERR_USER_IS_NOT_EXIST);

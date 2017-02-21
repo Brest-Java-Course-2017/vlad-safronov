@@ -44,6 +44,12 @@ public class UserDaoImpl implements UserDao {
     @Value("${sql.countOfUsersWithId}")
     private String COUNT_OF_USERS_WITH_ID_SQL;
 
+    @Value("${sql.getUserByLogin}")
+    private String GET_USER_BY_LOGIN_SQL;
+
+    @Value("${sql.countOfUsersWithLogin}")
+    private String COUNT_OF_USERS_WITH_LOGIN_SQL;
+
     private static final String USER_ID = "user_id";
     private static final String LOGIN ="login";
     private static final String PASSWORD ="password";
@@ -60,8 +66,13 @@ public class UserDaoImpl implements UserDao {
         jdbcTemplate = new JdbcTemplate(dataSource);
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
-    public User getUserByLogin(String login){
-        return null;
+
+    public User getUserByLogin(String login) throws Exception {
+        if(!isUserExist(login))
+            throw new Exception(ERR_USER_IS_NOT_EXIST);
+        SqlParameterSource namedParameters = new MapSqlParameterSource("login",login);
+        return namedParameterJdbcTemplate.queryForObject
+                    (GET_USER_BY_LOGIN_SQL,namedParameters,new UserRowMapper());
     }
 
 
@@ -103,6 +114,11 @@ public class UserDaoImpl implements UserDao {
     private boolean isUserExist(Integer userId){
         int count = jdbcTemplate.queryForObject
                 (COUNT_OF_USERS_WITH_ID_SQL,new Object[]{userId},Integer.class);
+        return (count!=0);
+    }
+    private boolean isUserExist(String login){
+        int count = jdbcTemplate.queryForObject
+                (COUNT_OF_USERS_WITH_LOGIN_SQL,new Object[]{login},Integer.class);
         return (count!=0);
     }
 

@@ -16,5 +16,5 @@ public interface UserDao {
 
     public void deleteUser(Integer userId) throws Exception;
 
-    public User getUserByLogin(String login);
+    public User getUserByLogin(String login) throws Exception;
 }

@@ -2,6 +2,7 @@ package com.epam.test.dao;
 
 
 import com.epam.test.model.User;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -51,6 +52,20 @@ public class UserDaoImplTest{
         assertEquals(new Integer(COUNT_OF_ALL_USERS+1),id);
         userDao.deleteUser(COUNT_OF_ALL_USERS+1);
     }
+
+    @Test
+    public void getUserByLoginTest() throws Exception {
+        User user = userDao.getUserById(1);
+        User testUser = userDao.getUserByLogin(user.getLogin());
+        Assert.assertEquals(user,testUser);
+    }
+    @Test
+    public void getNotExistUserByLoginTest() throws Exception{
+        thrown.expect(Exception.class);
+        thrown.expectMessage(UserDaoImpl.ERR_USER_IS_NOT_EXIST);
+        User testUser = userDao.getUserByLogin("Blablabla");
+    }
+
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();

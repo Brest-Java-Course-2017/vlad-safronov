@@ -106,10 +106,10 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public void updateUser(User user) throws Exception {
+    public int updateUser(User user) throws Exception {
         SqlParameterSource namedParameters = new BeanPropertySqlParameterSource(user);
         if(!isUserExist(user.getUserId())) throw new Exception(ERR_USER_IS_NOT_EXIST);
-        namedParameterJdbcTemplate.update(UPDATE_USER_SQL,namedParameters);
+        return  namedParameterJdbcTemplate.update(UPDATE_USER_SQL,namedParameters);
     }
     private boolean isUserExist(Integer userId){
         int count = jdbcTemplate.queryForObject

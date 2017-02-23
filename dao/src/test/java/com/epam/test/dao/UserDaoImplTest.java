@@ -29,6 +29,10 @@ public class UserDaoImplTest{
     @Autowired
     UserDao userDao;
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+
     @Test
     public void getAllUsersTest() throws Exception {
         List<User> users = userDao.getAllUsers();
@@ -67,11 +71,26 @@ public class UserDaoImplTest{
     }
 
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-    @Test
-    public void updateUser() throws Exception{
 
+    @Test
+    public void updateUserTest() throws Exception{
+        User user = new User(
+                COUNT_OF_ALL_USERS-1,
+                "UpdatedUser",
+                "UpdatedPassword",
+                "UpdatedDescription");
+
+        User oldUser = userDao.getUserById(COUNT_OF_ALL_USERS-1);
+        assertNotEquals(oldUser,user);
+
+        Integer id = userDao.updateUser(user);
+        assertEquals(user.getUserId(),id);
+        User newUser = userDao.getUserById(COUNT_OF_ALL_USERS-1);
+        assertEquals(user,newUser);
+
+    }
+    @Test
+    public void updateNotExistUserTest() throws Exception {
         User user = new User(
                 COUNT_OF_ALL_USERS+1,
                 "UpdatedUser",
@@ -80,17 +99,9 @@ public class UserDaoImplTest{
         thrown.expect(Exception.class);
         thrown.expectMessage(UserDaoImpl.ERR_USER_IS_NOT_EXIST);
         userDao.updateUser(user);
-
-        user.setUserId(COUNT_OF_ALL_USERS-1);
-        User oldUser = userDao.getUserById(COUNT_OF_ALL_USERS-1);
-        assertNotEquals(oldUser,user);
-
-        userDao.updateUser(user);
-        User newUser = userDao.getUserById(COUNT_OF_ALL_USERS-1);
-        assertEquals(user,newUser);
     }
     @Test
-    public void deleteUser() throws Exception{
+    public void deleteUserTest() throws Exception{
         List<User> users = userDao.getAllUsers();
         Integer sizeBeforeDelete = users.size();
 
@@ -103,9 +114,9 @@ public class UserDaoImplTest{
         Integer sizeAfterDelete = users.size();
         assertEquals(1,sizeBeforeDelete-sizeAfterDelete);
         assertEquals(null,userDao.getUserById(COUNT_OF_ALL_USERS));
-
-        //TODO вынести негативные сценарии в отдельные тесты
-
+    }
+    @Test
+    public void deleteNotExistUserTest() throws Exception {
         thrown.expect(Exception.class);
         thrown.expectMessage(UserDaoImpl.ERR_USER_IS_NOT_EXIST);
         userDao.deleteUser(COUNT_OF_ALL_USERS+1);

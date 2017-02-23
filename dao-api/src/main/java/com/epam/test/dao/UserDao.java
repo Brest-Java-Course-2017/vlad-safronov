@@ -6,15 +6,16 @@ import java.util.List;
 
 public interface UserDao {
 
-    public List<User> getAllUsers();
+     List<User> getAllUsers();
 
-    public User getUserById(Integer userId);
+     User getUserById(Integer userId);
 
-    public Integer addUser(User user);
+     Integer addUser(User user);
 
-    public void updateUser(User user) throws Exception;
+     int updateUser(User user) throws Exception;
 
-    public void deleteUser(Integer userId) throws Exception;
+     void deleteUser(Integer userId) throws Exception;
 
-    public User getUserByLogin(String login) throws Exception;
+     User getUserByLogin(String login) throws Exception;
+
 }

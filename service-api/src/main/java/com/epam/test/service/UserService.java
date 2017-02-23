@@ -31,7 +31,7 @@ public interface UserService {
      * @return user
      * @throws DataAccessException
      */
-    User getUserByLogin(String login) throws DataAccessException;
+    User getUserByLogin(String login) throws Exception;
 
     /**
      * Create new user.
@@ -47,8 +47,8 @@ public interface UserService {
      * @param user user.
      * @return new user Id.
      */
-    int updateUser(User user) throws DataAccessException;
+    int updateUser(User user) throws Exception;
 
-    int deleteUser(Integer userId) throws DataAccessException;
+    int deleteUser(Integer userId) throws Exception;
 
 }

@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +46,11 @@ public class UserDaoImplTest{
         User user = userDao.getUserById(COUNT_OF_ALL_USERS-1);
         assertNotNull(user);
         assertEquals("userLogin1",user.getLogin());
-        user = userDao.getUserById(COUNT_OF_ALL_USERS+1);
+
+    }
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void getNotExistUserById(){
+        User user = userDao.getUserById(COUNT_OF_ALL_USERS+1);
         assertEquals(null,user);
     }
     @Test
@@ -100,6 +105,7 @@ public class UserDaoImplTest{
         thrown.expectMessage(UserDaoImpl.ERR_USER_IS_NOT_EXIST);
         userDao.updateUser(user);
     }
+
     @Test
     public void deleteUserTest() throws Exception{
         List<User> users = userDao.getAllUsers();
@@ -113,7 +119,8 @@ public class UserDaoImplTest{
         users = userDao.getAllUsers();
         Integer sizeAfterDelete = users.size();
         assertEquals(1,sizeBeforeDelete-sizeAfterDelete);
-        assertEquals(null,userDao.getUserById(COUNT_OF_ALL_USERS));
+        thrown.expect(EmptyResultDataAccessException.class);
+        userDao.getUserById(COUNT_OF_ALL_USERS);
     }
     @Test
     public void deleteNotExistUserTest() throws Exception {

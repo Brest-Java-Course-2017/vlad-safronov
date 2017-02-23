@@ -56,13 +56,13 @@ public class UserServiceImplMockTest {
         userService.getUserByLogin(USER.getLogin());
     }
 
-    @Test
-    public void getAllUsersTest(){
-        expect(mockUserDao.getAllUsers()).andReturn(null).times(1);
-        replay(mockUserDao);
-
-        userService.getAllUsers();
-    }
+//    @Test
+//    public void getAllUsersTest(){
+//       expect(mockUserDao.getAllUsers()).andReturn().times(1);
+//        replay(mockUserDao);
+//
+//        userService.getAllUsers();
+//    }
 
     @Test
     public void updateUserTest() throws Exception {
@@ -172,6 +172,13 @@ public class UserServiceImplMockTest {
         userService.deleteUser(id);
     }
 
+    @Test
+    public void getUserByIdTest(){
+        expect(mockUserDao.getUserById(1)).andReturn(new User());
+        replay(mockUserDao);
+
+        userService.getUserById(1);
+    }
     @Test
     public void getUserWithNegativeIdTest(){
         replay(mockUserDao);

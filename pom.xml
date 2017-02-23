@@ -16,6 +16,7 @@
         <junit.version>4.12</junit.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <easymock.version>3.4</easymock.version>
+        <thymeleaf.version>3.0.3.RELEASE</thymeleaf.version>
     </properties>
 
 
@@ -26,6 +27,7 @@
         <module>test-database</module>
         <module>service-api</module>
         <module>service</module>
+        <module>web-app</module>
     </modules>
 
 
@@ -42,6 +44,11 @@
                 <artifactId>easymock</artifactId>
                 <version>${easymock.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.thymeleaf</groupId>
+                <artifactId>thymeleaf-spring4</artifactId>
+                <version>${thymeleaf.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>
@@ -90,6 +97,16 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>${spring.version}</version>
                 <scope>test</scope>
@@ -102,6 +119,11 @@
             <dependency>
                 <groupId>com.epam.test</groupId>
                 <artifactId>service-api</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.test</groupId>
+                <artifactId>service</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>

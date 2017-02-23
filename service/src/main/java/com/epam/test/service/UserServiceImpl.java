@@ -28,7 +28,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() throws DataAccessException {
         LOGGER.debug("getAllUser(): get all users");
-        return userDao.getAllUsers();
+        List<User> allUsers = userDao.getAllUsers();
+        for (User user:allUsers) {
+            LOGGER.debug(user);
+        }
+        return allUsers;
     }
 
     @Override
@@ -36,7 +40,8 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("getUserById: user id = {}",userId);
         Assert.notNull(userId,ERR_USER_HAVE_NULL_ID);
         Assert.isTrue(userId.intValue()>0,ERR_USER_HAVE_NEGATIVE_ID);
-        return null;
+
+        return userDao.getUserById(userId);
     }
 
     @Override

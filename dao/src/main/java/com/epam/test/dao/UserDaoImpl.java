@@ -84,14 +84,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUserById(Integer userId) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("p_user_id", userId);
-        User user = null;
-        try {
-             user = namedParameterJdbcTemplate.queryForObject(
+        User user = namedParameterJdbcTemplate.queryForObject(
                     GET_USER_BY_ID_SQL, namedParameters, new UserRowMapper());
 
-        }catch(EmptyResultDataAccessException e){
 
-        }
         return user;
     }
 

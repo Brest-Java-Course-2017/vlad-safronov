@@ -31,11 +31,18 @@
         <module>service</module>
         <module>web-app</module>
         <module>rest-app</module>
+        <module>client-api</module>
+        <module>client-rest</module>
     </modules>
 
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.epam.test</groupId>
+                <artifactId>client-api</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>

@@ -21,12 +21,15 @@ import static org.easymock.EasyMock.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:test-spring-rest-mock.xml"})
 public class UserControllerMockTest {
+
+    public static final User user = new User( "userLogin1", "userPassword1");
 
     @Resource
     private UserRestController userController;
@@ -76,6 +79,20 @@ public class UserControllerMockTest {
                         .accept(MediaType.APPLICATION_JSON)
         ).andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getUserByIdTest() throws Exception {
+        expect(userService.getUserById(1)).andReturn(user);
+        replay(userService);
+
+        mockMvc.perform(
+                get("/user/id/1")
+                .accept(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.login").value(user.getLogin()))
+                .andExpect(jsonPath("$.password").value(user.getPassword()));
     }
 
     @Test

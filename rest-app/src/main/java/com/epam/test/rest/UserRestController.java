@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,14 +47,24 @@ public class UserRestController {
     //curl -v localhost:8088/user/userLogin1
     @RequestMapping(value = "/user/{login}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.FOUND)
-    public @ResponseBody User getUser(@PathVariable(value = "login") String login) throws Exception {
-        LOGGER.debug("getUser: login = {}", login);
+    public @ResponseBody User getUserByLogin(@PathVariable(value = "login") String login) throws Exception {
+        LOGGER.debug("getUserByLogin: login = {}", login);
         return userService.getUserByLogin(login);
     }
+
+
 
     @RequestMapping(value = "/user/{id}",method = RequestMethod.DELETE)
     public Integer deleteUser(@PathVariable(value="id") Integer id) throws Exception{
         LOGGER.debug("deleteUser: id = {}",id);
         return userService.deleteUser(id);
+    }
+
+    //FIXME bad endpoint
+    @RequestMapping(value = "/user/id/{id}",method = RequestMethod.GET)
+    public User getUserById(@PathVariable(value="id") Integer id) throws Exception{
+        Assert.isTrue(id>0);
+        LOGGER.debug("getUser: id = {}",id);
+        return userService.getUserById(id);
     }
 }

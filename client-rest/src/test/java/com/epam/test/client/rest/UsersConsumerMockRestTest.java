@@ -74,4 +74,11 @@ public class UsersConsumerMockRestTest {
         assertEquals(USER_LOGIN_3, user3.getLogin());
     }
 
+    @Test
+    public void getUserById(){
+      expect(mockRestTemplate.getForEntity(hostUrl+"/"+urlUser+"/"+"1",User.class))
+              .andReturn(new ResponseEntity<User>(user,Htt)
+      User actualUser = usersConsumer.getUserById(1);
+    }
+
 }

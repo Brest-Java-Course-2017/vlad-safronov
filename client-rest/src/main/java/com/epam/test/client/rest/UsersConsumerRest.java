@@ -39,7 +39,9 @@ public class UsersConsumerRest implements UsersConsumer {
 
     @Override
     public User getUserById(Integer userId) throws ServerDataAccessException {
-        return null;
+        ResponseEntity responseEntity = restTemplate.getForEntity(hostUrl+"/"+urlUser+"/"+userId,User.class);
+        User user = (User)responseEntity.getBody();
+        return user;
     }
 
     @Override

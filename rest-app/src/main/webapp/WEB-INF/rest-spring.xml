@@ -11,6 +11,9 @@
 
     <context:component-scan base-package="com.epam.test.rest"/>
 
+
+
+
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
@@ -40,9 +43,9 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="userService" class="com.epam.test.service.UserServiceImpl">
-        <property name="userDao" ref="userDao"/>
-    </bean>
+  <bean class="com.epam.test.service.UserServiceImpl">
+      <property name="userDao" ref="userDao"/>
+  </bean>
 
 
     <mvc:annotation-driven/>

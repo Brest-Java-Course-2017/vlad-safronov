@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  * Created by vlad on 24.2.17.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:test-spring-rest-mock.xml")
+@ContextConfiguration(locations = {"classpath*:test-spring-rest-mock.xml"})
 public class VersionControllerMockTest {
 
     @Resource

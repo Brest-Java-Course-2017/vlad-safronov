@@ -62,6 +62,7 @@ public class UserRestController {
 
     //FIXME bad endpoint
     @RequestMapping(value = "/user/id/{id}",method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.FOUND)
     public User getUserById(@PathVariable(value="id") Integer id) throws Exception{
         Assert.isTrue(id>0);
         LOGGER.debug("getUser: id = {}",id);

@@ -5,6 +5,7 @@ import com.epam.test.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,9 +77,11 @@ public class UsersConsumerMockRestTest {
 
     @Test
     public void getUserById(){
-      expect(mockRestTemplate.getForEntity(hostUrl+"/"+urlUser+"/"+"1",User.class))
-              .andReturn(new ResponseEntity<User>(user,Htt)
+      expect(mockRestTemplate.getForEntity(hostUrl+"/"+urlUser+"/id/"+"1",User.class))
+              .andReturn(new ResponseEntity<User>(user,HttpStatus.FOUND));
+      replay(mockRestTemplate);
       User actualUser = usersConsumer.getUserById(1);
+      Assert.assertEquals(user,actualUser);
     }
 
 }

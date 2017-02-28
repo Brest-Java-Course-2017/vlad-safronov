@@ -50,4 +50,10 @@ public class UserRestController {
         LOGGER.debug("getUser: login = {}", login);
         return userService.getUserByLogin(login);
     }
+
+    @RequestMapping(value = "/user/{id}",method = RequestMethod.DELETE)
+    public Integer deleteUser(@PathVariable(value="id") Integer id) throws Exception{
+        LOGGER.debug("deleteUser: id = {}",id);
+        return userService.deleteUser(id);
+    }
 }

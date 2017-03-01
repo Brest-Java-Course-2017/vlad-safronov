@@ -43,6 +43,7 @@ public class UsersConsumerRest implements UsersConsumer {
 
         User user = (User)responseEntity.getBody();
         return user;
+
     }
 
     @Override
@@ -64,6 +65,8 @@ public class UsersConsumerRest implements UsersConsumer {
 
     @Override
     public int deleteUser(Integer userId) throws ServerDataAccessException {
+        restTemplate.delete(hostUrl+"/"+urlUser+"/"+userId);
+        //FIXME returned value?
         return 0;
     }
 }

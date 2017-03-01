@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,11 @@ public class UsersConsumerMockRestTest {
 
     @After
     public void tearDown() throws Exception {
+        verify(mockRestTemplate);
+    //    reset(mockRestTemplate);
+    }
+    @Before
+    public void init(){
         reset(mockRestTemplate);
     }
 
@@ -77,11 +83,19 @@ public class UsersConsumerMockRestTest {
 
     @Test
     public void getUserById(){
-      expect(mockRestTemplate.getForEntity(hostUrl+"/"+urlUser+"/id/"+"1",User.class))
-              .andReturn(new ResponseEntity<User>(user,HttpStatus.FOUND));
+        expect(mockRestTemplate.getForEntity(hostUrl+"/"+urlUser+"/id/"+"1",User.class))
+                .andReturn(new ResponseEntity<User>(user,HttpStatus.FOUND));
       replay(mockRestTemplate);
       User actualUser = usersConsumer.getUserById(1);
-      Assert.assertEquals(user,actualUser);
+         Assert.assertEquals(user,actualUser);
+    }
+
+    @Test
+    public void deleteUserTest(){
+        mockRestTemplate.delete(hostUrl+"/"+urlUser+"/"+1);
+        expectLastCall();
+        replay(mockRestTemplate);
+        usersConsumer.deleteUser(1);
     }
 
 }

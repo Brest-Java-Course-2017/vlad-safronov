@@ -18,4 +18,6 @@ public interface UserDao {
 
      User getUserByLogin(String login) throws Exception;
 
+     boolean isUserExist(String login);
+
 }

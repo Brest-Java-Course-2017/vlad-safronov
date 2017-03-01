@@ -44,6 +44,7 @@ public class UserServiceImplMockTest {
     @Test
     public void testAddUser() throws Exception {
         expect(mockUserDao.addUser(new User("userLogin3", "userPassword3"))).andReturn(5);
+        expect(mockUserDao.isUserExist("userLogin3")).andReturn(false);
         replay(mockUserDao);
         Integer id = userService.addUser(USER);
         Assert.isTrue(id == 5);

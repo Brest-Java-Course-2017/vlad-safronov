@@ -97,7 +97,6 @@ public class UserDaoImpl implements UserDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_USER_SQL, namedParameters, keyHolder);
         return keyHolder.getKey().intValue();
-        //TODO добавить проверку на отсутствие установленного id
     }
 
 
@@ -112,7 +111,7 @@ public class UserDaoImpl implements UserDao {
                 (COUNT_OF_USERS_WITH_ID_SQL,new Object[]{userId},Integer.class);
         return (count!=0);
     }
-    private boolean isUserExist(String login){
+    public boolean isUserExist(String login){
         int count = jdbcTemplate.queryForObject
                 (COUNT_OF_USERS_WITH_LOGIN_SQL,new Object[]{login},Integer.class);
         return (count!=0);

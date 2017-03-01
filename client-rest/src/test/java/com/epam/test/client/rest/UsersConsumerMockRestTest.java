@@ -47,12 +47,11 @@ public class UsersConsumerMockRestTest {
     private RestTemplate mockRestTemplate;
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown(){
         verify(mockRestTemplate);
-    //    reset(mockRestTemplate);
     }
     @Before
-    public void init(){
+    public void setUp(){
         reset(mockRestTemplate);
     }
 

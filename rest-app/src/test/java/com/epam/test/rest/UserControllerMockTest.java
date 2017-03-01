@@ -90,7 +90,7 @@ public class UserControllerMockTest {
                 get("/user/id/1")
                 .accept(MediaType.APPLICATION_JSON)
         ).andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isFound())
                 .andExpect(jsonPath("$.login").value(user.getLogin()))
                 .andExpect(jsonPath("$.password").value(user.getPassword()));
     }

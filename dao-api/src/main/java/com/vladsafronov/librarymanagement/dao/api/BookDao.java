@@ -81,4 +81,10 @@ public interface BookDao {
      */
     int getCountOfBookWithTitle(String title);
 
+    /**
+     * Get count of all books
+     *
+     * @return count of all books
+     */
+    int getCountOfAllBooks();
 }

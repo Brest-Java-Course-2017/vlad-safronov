@@ -48,6 +48,8 @@ public class BookDaoH2Impl implements BookDao {
     private String GET_COUNT_OF_BOOK_WITH_TITLE_SQL;
     @Value("${BookDao.sql.getBookByAuthor}")
     private String GET_BOOK_BY_AUTHOR_SQL;
+    @Value("${BookDao.sql.getCountOfAllBooks}")
+    private String GET_COUNT_OF_ALL_BOOKS;
 
     BookDaoH2Impl(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
@@ -117,6 +119,10 @@ public class BookDaoH2Impl implements BookDao {
     public int getCountOfBookWithTitle(String title) {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("title",title);
         return namedParameterJdbcTemplate.queryForObject(GET_COUNT_OF_BOOK_WITH_TITLE_SQL,sqlParameterSource,Integer.class);
+    }
+
+    public int getCountOfAllBooks(){
+        return jdbcTemplate.queryForObject(GET_COUNT_OF_ALL_BOOKS,Integer.class);
     }
 
 

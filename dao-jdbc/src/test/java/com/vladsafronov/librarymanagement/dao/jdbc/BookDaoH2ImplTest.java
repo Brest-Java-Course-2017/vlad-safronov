@@ -49,6 +49,19 @@ public class BookDaoH2ImplTest {
 
 
     @Test
+    public void getCountOfAllBooks(){
+        assertEquals(COUNT_OF_BOOKS,bookDao.getCountOfAllBooks());
+    }
+    @Test
+    public void getCountOfAllBooksIfHasNoBooks(){
+        for (int i = 0; i < COUNT_OF_BOOKS; i++) {
+            bookDao.deleteBookById(i);
+        }
+        assertEquals(0,bookDao.getCountOfAllBooks());
+    }
+
+
+    @Test
     public void getAllBooks() throws Exception {
         List<Book> books = bookDao.getAllBooks();
         assertNotNull(books);

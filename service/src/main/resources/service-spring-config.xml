@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:database.properties</value>
+                <value>classpath*:bookdao-sql-querries.properties</value>
+                <value>classpath*:authordao-sql-querries.properties</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <import resource="classpath*:database-spring-config.xml"/>
+
+
+
+
+
+    <bean id="bookDao" class="com.vladsafronov.librarymanagement.dao.jdbc.BookDaoH2Impl">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="authorDao" class="com.vladsafronov.librarymanagement.dao.jdbc.AuthorDaoH2Impl">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+
+</beans>

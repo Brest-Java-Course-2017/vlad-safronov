@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.vladsafronov</groupId>
-            <artifactId>dao-jdbc</artifactId>
+            <artifactId>model</artifactId>
         </dependency>
 
     </dependencies>

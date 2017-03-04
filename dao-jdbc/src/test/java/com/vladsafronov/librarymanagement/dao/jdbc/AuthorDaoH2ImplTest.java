@@ -98,6 +98,7 @@ public class AuthorDaoH2ImplTest {
         count = authorDao.getCountOfAuthorsByNameAndSurname(author);
         assertEquals(0,count);
     }
+
     @Test
     public void addAuthor(){
         Author author = new Author(COUNT_OF_AUTHORS+1,"Blabla","Blabla",LocalDate.now());
@@ -117,11 +118,13 @@ public class AuthorDaoH2ImplTest {
         assertNotNull(author);
         assertEquals(secondAuthor,author);
     }
+
     @Test(expected = EmptyResultDataAccessException.class)
     public void getAuthorByUnexistedBook(){
         Book book = new Book(COUNT_OF_BOOKS+1,"Blabla",1,LocalDate.now(),"Ru");
         authorDao.getAuthorByBook(book);
     }
+
     @Test(expected = EmptyResultDataAccessException.class)
     public void deleteAuthor(){
         authorDao.deleteAuthorById(3);
@@ -144,6 +147,7 @@ public class AuthorDaoH2ImplTest {
         count = authorDao.getCountOfAuthorsBooks(thirdAuthor);
         assertEquals(0,count);
     }
+
     @Test
     public void updateAuthor(){
         Author author = new Author
@@ -154,6 +158,7 @@ public class AuthorDaoH2ImplTest {
         assertEquals(author,actualAuthor);
 
     }
+
     @Test
     public void updateUnexistAuthor(){
         Author author = new Author
@@ -161,6 +166,7 @@ public class AuthorDaoH2ImplTest {
         int count = authorDao.updateAuthor(author);
         assertEquals(0,count);
     }
+
     @Test
     public void getAverageRatingOfAuthorsBooks(){
         double delta = 0.001;
@@ -183,6 +189,22 @@ public class AuthorDaoH2ImplTest {
     public void getAverageBookRatingOnUnexistAuthor(){
       double count = authorDao.getAverageRatingOfAuthorsBooks
                 (new Author(COUNT_OF_AUTHORS+1,"Bla","Bla",LocalDate.now()));
+    }
+
+    @Test
+    public void getCountOfAllAuthors(){
+        assertEquals(COUNT_OF_AUTHORS,authorDao.getCountOfAllAuthors());
+    }
+
+    @Test
+    public void getCountOfAllAuthorsIfHasNoAuthors(){
+        for (int i = 1; i <= COUNT_OF_BOOKS; i++) {
+            bookDao.deleteBookById(i);
+        }
+        for (int i = 1; i <= COUNT_OF_AUTHORS; i++) {
+            authorDao.deleteAuthorById(i);
+        }
+        assertEquals(0,authorDao.getCountOfAllAuthors());
     }
 
 }

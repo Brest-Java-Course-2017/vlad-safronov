@@ -32,7 +32,7 @@ public class AuthorDaoH2Impl implements AuthorDao {
     @Value("${AuthorDao.sql.getAllAuthors}")
     private String GET_ALL_AUTHORS_SQL;
     @Value("${AuthorDao.sql.getCountOfAuthorsByNameAndSurname}")
-    private String GET_COUNT_OF_AUTHORS_SQL;
+    private String GET_COUNT_OF_AUTHORS_BY_NAME_AND_SURNAME_SQL;
     @Value("${AuthorDao.sql.addAuthor}")
     private String ADD_AUTHOR_SQL;
     @Value("${AuthorDao.sql.getAuthorByBook}")
@@ -45,6 +45,8 @@ public class AuthorDaoH2Impl implements AuthorDao {
     private String UPDATE_AUTHOR_SQL;
     @Value("${AuthorDao.sql.getAverageRatingOfAuthorsBooks}")
     private String GET_AVERAGE_RATING_OF_AUTHORS_BOOKS_SQL;
+    @Value("${AuthorDao.sql.getCountOfAllAuthors}")
+    private String GET_COUNT_OF_ALL_AUTHORS_SQL;
 
     public AuthorDaoH2Impl(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
@@ -83,7 +85,12 @@ public class AuthorDaoH2Impl implements AuthorDao {
     @Override
     public int getCountOfAuthorsByNameAndSurname(Author author) {
         SqlParameterSource source = new BeanPropertySqlParameterSource(author);
-        return namedParameterJdbcTemplate.queryForObject(GET_COUNT_OF_AUTHORS_SQL,source,Integer.class);
+        return namedParameterJdbcTemplate.queryForObject(GET_COUNT_OF_AUTHORS_BY_NAME_AND_SURNAME_SQL,source,Integer.class);
+    }
+
+    @Override
+    public int getCountOfAllAuthors() {
+        return jdbcTemplate.queryForObject(GET_COUNT_OF_ALL_AUTHORS_SQL,Integer.class);
     }
 
     @Override

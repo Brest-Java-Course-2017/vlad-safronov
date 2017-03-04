@@ -60,6 +60,13 @@ public interface AuthorDao {
     int getCountOfAuthorsByNameAndSurname(Author author);
 
     /**
+     * Get count of all authors
+     *
+     * @return count of all authors
+     */
+    int getCountOfAllAuthors();
+
+    /**
      * Add author
      *
      * @param author author object

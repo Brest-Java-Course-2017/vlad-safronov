@@ -54,7 +54,7 @@ public class BookDaoH2ImplTest {
     }
     @Test
     public void getCountOfAllBooksIfHasNoBooks(){
-        for (int i = 0; i < COUNT_OF_BOOKS; i++) {
+        for (int i = 1; i <= COUNT_OF_BOOKS; i++) {
             bookDao.deleteBookById(i);
         }
         assertEquals(0,bookDao.getCountOfAllBooks());

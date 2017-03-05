@@ -43,7 +43,7 @@ public class BookServiceImpl implements BookService {
     public Book getBookById(Integer id) {
         Assert.notNull(id);
 
-        if(id>bookDao.getCountOfAllBooks()) {
+        if(id>bookDao.getCountOfAllBooks() | id<=0) {
             throw new IllegalArgumentException(BookServiceErrors.ID_IS_NOT_IN_ACCEPTABLE_RANGE);
         }
 
@@ -75,16 +75,36 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public int updateBook(Book book) {
-        return 0;
+        Assert.notNull(book);
+        Assert.notNull(book.getId());
+        Assert.hasText(book.getTitle());
+        Assert.notNull(book.getRating());
+        Assert.notNull(book.getReleaseDate());
+        Assert.hasText(book.getLanguage());
+
+        return bookDao.updateBook(book);
     }
 
     @Override
     public void deleteBookById(Integer id) {
-
+        Assert.notNull(id);
+        if(id < 0){
+            throw new IllegalArgumentException
+                    (BookServiceErrors.ID_IS_NOT_IN_ACCEPTABLE_RANGE);
+        }
+        bookDao.deleteBookById(id);
     }
 
     @Override
     public void addBook(Book book) {
+        Assert.notNull(book);
+        Assert.isNull(book.getId());
+        Assert.hasText(book.getTitle());
+        Assert.notNull(book.getRating());
+        Assert.notNull(book.getReleaseDate());
+        Assert.hasText(book.getLanguage());
 
+        bookDao.addBook(book);
     }
+
 }

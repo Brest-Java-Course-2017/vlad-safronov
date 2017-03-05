@@ -1,7 +1,6 @@
 package com.vladsafronov.librarymanagement.dao.jdbc;
 
 import com.vladsafronov.librarymanagement.dao.api.BookDao;
-import com.vladsafronov.librarymanagement.dao.jdbc.BookDaoErrors;
 import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
 import org.junit.Assert;
@@ -128,7 +127,7 @@ public class BookDaoH2ImplTest {
     @Test
     public void deleteBookByUnexistIdTest(){
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(BookDaoErrors.BOOK_ISNT_EXIST);
+        thrown.expectMessage(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
         bookDao.deleteBookById(COUNT_OF_BOOKS+1);
     }
 

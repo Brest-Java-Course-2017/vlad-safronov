@@ -102,7 +102,10 @@ public class AuthorDaoH2Impl implements AuthorDao {
     @Override
     public void deleteAuthorById(Integer id) {
         SqlParameterSource source = new MapSqlParameterSource("id",id);
-        namedParameterJdbcTemplate.update(DELETE_AUTHOR_BY_ID_SQL,source);
+        int count = namedParameterJdbcTemplate.update(DELETE_AUTHOR_BY_ID_SQL,source);
+        if(count==0){
+            throw new IllegalArgumentException(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
+        }
     }
 
     @Override

@@ -4,7 +4,9 @@ import com.vladsafronov.librarymanagement.dao.api.AuthorDao;
 import com.vladsafronov.librarymanagement.dao.api.BookDao;
 import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -44,6 +46,10 @@ public class AuthorDaoH2ImplTest {
     AuthorDao authorDao;
     @Autowired
     BookDao bookDao;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
 
     @Test
     public void getAuthorById(){
@@ -126,10 +132,18 @@ public class AuthorDaoH2ImplTest {
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
-    public void deleteAuthor(){
+    public void deleteAuthorAndCheck(){
         authorDao.deleteAuthorById(3);
         authorDao.getAuthorById(3);
     }
+    @Test
+    public void deleteAuthorWithBiggerThenCountOfAuthorsId(){
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
+
+        authorDao.deleteAuthorById(COUNT_OF_AUTHORS+1);
+    }
+
 
     @Test(expected = DataIntegrityViolationException.class)
     public void deleteAuthorWithBooks(){

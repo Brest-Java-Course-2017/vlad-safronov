@@ -106,7 +106,7 @@ public class BookDaoH2Impl implements BookDao {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id",id);
         namedParameterJdbcTemplate.update(DELETE_BOOK_FROM_BOOK_AUTHOR_SQL,sqlParameterSource);
         if(namedParameterJdbcTemplate.update(DELETE_BOOK_BY_ID_SQL,sqlParameterSource)!=1){
-            throw new IllegalArgumentException(BookDaoErrors.BOOK_ISNT_EXIST);
+            throw new IllegalArgumentException(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
         }
     }
 

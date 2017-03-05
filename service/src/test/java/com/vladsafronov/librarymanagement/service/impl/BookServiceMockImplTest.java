@@ -4,7 +4,7 @@ import com.vladsafronov.librarymanagement.dao.api.BookDao;
 import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
 import com.vladsafronov.librarymanagement.service.api.BookService;
-import com.vladsafronov.librarymanagement.service.impl.integration.BookServiceErrors;
+import com.vladsafronov.librarymanagement.service.impl.integration.ServiceErrorMessages;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
@@ -115,7 +115,7 @@ public class BookServiceMockImplTest {
         replay(mockBookDao);
 
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(BookServiceErrors.ID_IS_NOT_IN_ACCEPTABLE_RANGE);
+        thrown.expectMessage(ServiceErrorMessages.ID_IS_NOT_IN_ACCEPTABLE_RANGE);
 
         bookService.getBookById(id);
     }
@@ -301,7 +301,7 @@ public class BookServiceMockImplTest {
         replay(mockBookDao);
 
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(BookServiceErrors.ID_IS_NOT_IN_ACCEPTABLE_RANGE);
+        thrown.expectMessage(ServiceErrorMessages.ID_IS_NOT_IN_ACCEPTABLE_RANGE);
         bookService.deleteBookById(id);
     }
 

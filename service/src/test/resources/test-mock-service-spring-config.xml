@@ -22,6 +22,10 @@
         <property name="bookDao" ref="bookDao"/>
     </bean>
 
+    <bean id="authorService" class="com.vladsafronov.librarymanagement.service.impl.AuthorServiceImpl">
+        <property name="authorDao" ref="authorDao"/>
+    </bean>
+
     <bean id="bookDao" class="org.easymock.EasyMock" factory-method="createMock">
         <constructor-arg value="com.vladsafronov.librarymanagement.dao.api.BookDao"/>
     </bean>

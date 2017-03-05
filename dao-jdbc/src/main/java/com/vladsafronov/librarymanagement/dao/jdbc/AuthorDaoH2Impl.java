@@ -48,6 +48,11 @@ public class AuthorDaoH2Impl implements AuthorDao {
     @Value("${AuthorDao.sql.getCountOfAllAuthors}")
     private String GET_COUNT_OF_ALL_AUTHORS_SQL;
 
+    public static final String ID="id";
+    public static final String BIRTH_DATE="birth_date";
+    public static final String NAME="name";
+    public static final String SURNAME="surname";
+
     public AuthorDaoH2Impl(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
@@ -60,7 +65,7 @@ public class AuthorDaoH2Impl implements AuthorDao {
 
     @Override
     public Author getAuthorById(Integer id) {
-        SqlParameterSource source = new MapSqlParameterSource("id",id);
+        SqlParameterSource source = new MapSqlParameterSource(ID,id);
         return namedParameterJdbcTemplate.queryForObject
                 (GET_AUTHOR_BY_ID_SQL,source,new AuthorRowMapper());
     }
@@ -101,7 +106,7 @@ public class AuthorDaoH2Impl implements AuthorDao {
 
     @Override
     public void deleteAuthorById(Integer id) {
-        SqlParameterSource source = new MapSqlParameterSource("id",id);
+        SqlParameterSource source = new MapSqlParameterSource(ID,id);
         int count = namedParameterJdbcTemplate.update(DELETE_AUTHOR_BY_ID_SQL,source);
         if(count==0){
             throw new IllegalArgumentException(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
@@ -134,11 +139,12 @@ public class AuthorDaoH2Impl implements AuthorDao {
         @Override
         public Author mapRow(ResultSet resultSet, int i) throws SQLException {
             Author author = new Author();
-            author.setId(resultSet.getInt("id"));
-            author.setBirthDate(LocalDate.parse(resultSet.getString("birth_date")));
-            author.setName(resultSet.getString("name"));
-            author.setSurname(resultSet.getString("surname"));
+            author.setId(resultSet.getInt(ID));
+            author.setBirthDate(LocalDate.parse(resultSet.getString(BIRTH_DATE)));
+            author.setName(resultSet.getString(NAME));
+            author.setSurname(resultSet.getString(SURNAME));
             return author;
         }
     }
+
 }

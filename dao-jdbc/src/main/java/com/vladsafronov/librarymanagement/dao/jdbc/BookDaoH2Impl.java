@@ -51,6 +51,12 @@ public class BookDaoH2Impl implements BookDao {
     @Value("${BookDao.sql.getCountOfAllBooks}")
     private String GET_COUNT_OF_ALL_BOOKS;
 
+    public static final String TITLE="title";
+    public static final String ID="id";
+    public static final String LANG="lang";
+    public static final String RATING="rating";
+    public static final String RELEASE_DATE="release_date";
+
     BookDaoH2Impl(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
@@ -83,27 +89,20 @@ public class BookDaoH2Impl implements BookDao {
     }
 
     public Book getBookByTitle(String title) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("title",title);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(TITLE,title);
         return namedParameterJdbcTemplate.queryForObject
                 (GET_BOOK_BY_TITLE_SQL,sqlParameterSource,new BookRowMapper());
     }
 
     public int updateBook(Book book) {
-
-
-        Map<String,Object> source = new HashMap<>();
-        source.put("rating",book.getRating());
-        source.put("title",book.getTitle());
-        source.put("releaseDate",book.getReleaseDate());
-        source.put("lang",book.getLanguage());
-        source.put("id",book.getId());
+        SqlParameterSource source = new BeanPropertySqlParameterSource(book);
 
         return namedParameterJdbcTemplate.update
                 (UPDATE_BOOK_SQL,source);
     }
 
     public void deleteBookById(Integer id) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id",id);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID,id);
         namedParameterJdbcTemplate.update(DELETE_BOOK_FROM_BOOK_AUTHOR_SQL,sqlParameterSource);
         if(namedParameterJdbcTemplate.update(DELETE_BOOK_BY_ID_SQL,sqlParameterSource)!=1){
             throw new IllegalArgumentException(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
@@ -117,7 +116,7 @@ public class BookDaoH2Impl implements BookDao {
     }
 
     public int getCountOfBookWithTitle(String title) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("title",title);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(TITLE,title);
         return namedParameterJdbcTemplate.queryForObject(GET_COUNT_OF_BOOK_WITH_TITLE_SQL,sqlParameterSource,Integer.class);
     }
 
@@ -129,13 +128,14 @@ public class BookDaoH2Impl implements BookDao {
     public static class BookRowMapper implements  RowMapper<Book>{
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             Book res = new Book();
-            res.setTitle(resultSet.getString("title"));
-            res.setId(resultSet.getInt("id"));
-            res.setLanguage(resultSet.getString("lang"));
-            res.setRating(resultSet.getInt("rating"));
-            res.setReleaseDate(LocalDate.parse(resultSet.getString("release_date")));
+            res.setTitle(resultSet.getString(TITLE));
+            res.setId(resultSet.getInt(ID));
+            res.setLanguage(resultSet.getString(LANG));
+            res.setRating(resultSet.getInt(RATING));
+            res.setReleaseDate(LocalDate.parse(resultSet.getString(RELEASE_DATE)));
 
             return res;
         }
     }
+
 }

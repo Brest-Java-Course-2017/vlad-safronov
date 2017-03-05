@@ -1,10 +1,10 @@
 package com.vladsafronov.librarymanagement.service.impl;
 
-import com.vladsafronov.librarymanagement.dao.jdbc.BookDaoErrors;
+import com.vladsafronov.librarymanagement.dao.jdbc.DaoErrors;
 import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
 import com.vladsafronov.librarymanagement.service.api.BookService;
-import com.vladsafronov.librarymanagement.service.impl.integration.BookServiceErrors;
+import com.vladsafronov.librarymanagement.service.impl.integration.ServiceErrorMessages;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -92,7 +92,7 @@ public class BookServiceImplTest {
 
     public void getBookByUnexistId(){
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(BookServiceErrors.ID_IS_NOT_IN_ACCEPTABLE_RANGE);
+        thrown.expectMessage(ServiceErrorMessages.ID_IS_NOT_IN_ACCEPTABLE_RANGE);
         Book book = bookService.getBookById(COUNT_OF_BOOKS+1);
     }
 
@@ -126,7 +126,7 @@ public class BookServiceImplTest {
     @Test
     public void deleteBookByUnexistIdTest(){
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(BookDaoErrors.BOOK_ISNT_EXIST);
+        thrown.expectMessage(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
         bookService.deleteBookById(COUNT_OF_BOOKS+1);
     }
 

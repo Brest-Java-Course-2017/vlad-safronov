@@ -19,8 +19,14 @@
     <import resource="classpath*:database-spring-config.xml"/>
 
 
+    <bean id="bookService" class="com.vladsafronov.librarymanagement.service.impl.BookServiceImpl">
+        <property name="bookDao" ref="bookDao"/>
+    </bean>
 
 
+    <bean id="authorService" class="com.vladsafronov.librarymanagement.service.impl.AuthorServiceImpl">
+        <property name="authorDao" ref="authorDao"/>
+    </bean>
 
     <bean id="bookDao" class="com.vladsafronov.librarymanagement.dao.jdbc.BookDaoH2Impl">
         <constructor-arg ref="dataSource"/>

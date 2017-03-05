@@ -4,11 +4,13 @@ import com.vladsafronov.librarymanagement.dao.api.BookDao;
 import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
 import com.vladsafronov.librarymanagement.service.api.BookService;
-import com.vladsafronov.librarymanagement.service.impl.integration.BookServiceErrors;
+import com.vladsafronov.librarymanagement.service.impl.integration.ServiceErrorMessages;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static com.vladsafronov.librarymanagement.service.impl.integration.Validation.validateId;
 
 /**
  * BookService implementation
@@ -42,9 +44,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getBookById(Integer id) {
         Assert.notNull(id);
+        validateId(id);
 
-        if(id>bookDao.getCountOfAllBooks() | id<=0) {
-            throw new IllegalArgumentException(BookServiceErrors.ID_IS_NOT_IN_ACCEPTABLE_RANGE);
+        if(id>bookDao.getCountOfAllBooks()) {
+            throw new IllegalArgumentException(ServiceErrorMessages.ID_IS_NOT_IN_ACCEPTABLE_RANGE);
         }
 
         return bookDao.getBookById(id);
@@ -88,10 +91,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBookById(Integer id) {
         Assert.notNull(id);
-        if(id < 0){
-            throw new IllegalArgumentException
-                    (BookServiceErrors.ID_IS_NOT_IN_ACCEPTABLE_RANGE);
-        }
+        validateId(id);
+
         bookDao.deleteBookById(id);
     }
 

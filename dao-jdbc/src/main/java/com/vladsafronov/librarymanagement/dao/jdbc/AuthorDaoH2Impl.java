@@ -3,6 +3,8 @@ package com.vladsafronov.librarymanagement.dao.jdbc;
 import com.vladsafronov.librarymanagement.dao.api.AuthorDao;
 import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,6 +25,8 @@ import java.util.List;
  * AuthorDao H2 implementation
  */
 public class AuthorDaoH2Impl implements AuthorDao {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -60,11 +64,15 @@ public class AuthorDaoH2Impl implements AuthorDao {
 
     @Override
     public List<Author> getAllAuthors() {
+        LOGGER.debug("getAllAuthors()");
+
         return jdbcTemplate.query(GET_ALL_AUTHORS_SQL,new AuthorRowMapper());
     }
 
     @Override
     public Author getAuthorById(Integer id) {
+        LOGGER.debug("getAuthorById(): id = "+id);
+
         SqlParameterSource source = new MapSqlParameterSource(ID,id);
         return namedParameterJdbcTemplate.queryForObject
                 (GET_AUTHOR_BY_ID_SQL,source,new AuthorRowMapper());
@@ -83,29 +91,39 @@ public class AuthorDaoH2Impl implements AuthorDao {
 
     @Override
     public Author getAuthorByBook(Book book) {
+        LOGGER.debug("getAuthorByBook(): " + book);
+
         SqlParameterSource source = new BeanPropertySqlParameterSource(book);
         return namedParameterJdbcTemplate.queryForObject(GET_AUTHOR_BY_BOOK_SQL,source,new AuthorRowMapper());
     }
 
     @Override
     public int getCountOfAuthorsByNameAndSurname(Author author) {
+        LOGGER.debug("getCountOfAuthorsByNameAndSurname(): " + author);
+
         SqlParameterSource source = new BeanPropertySqlParameterSource(author);
         return namedParameterJdbcTemplate.queryForObject(GET_COUNT_OF_AUTHORS_BY_NAME_AND_SURNAME_SQL,source,Integer.class);
     }
 
     @Override
     public int getCountOfAllAuthors() {
+        LOGGER.debug("getCountOfAllAuthors()");
+
         return jdbcTemplate.queryForObject(GET_COUNT_OF_ALL_AUTHORS_SQL,Integer.class);
     }
 
     @Override
     public void addAuthor(Author author) {
+        LOGGER.debug("addAuthor() :  " + author);
+
         SqlParameterSource source = new BeanPropertySqlParameterSource(author);
         namedParameterJdbcTemplate.update(ADD_AUTHOR_SQL,source);
     }
 
     @Override
     public void deleteAuthorById(Integer id) {
+        LOGGER.debug("deleteAuthorById(): id = "+id);
+
         SqlParameterSource source = new MapSqlParameterSource(ID,id);
         int count = namedParameterJdbcTemplate.update(DELETE_AUTHOR_BY_ID_SQL,source);
         if(count==0){
@@ -115,12 +133,16 @@ public class AuthorDaoH2Impl implements AuthorDao {
 
     @Override
     public int updateAuthor(Author author){
+        LOGGER.debug("updateAuthor(): " + author);
+
         SqlParameterSource source = new BeanPropertySqlParameterSource(author);
         return namedParameterJdbcTemplate.update(UPDATE_AUTHOR_SQL,source);
     }
 
     @Override
     public int getCountOfAuthorsBooks(Author author) {
+        LOGGER.debug("getCountOfAuthorsBooks(): " + author);
+
         SqlParameterSource source = new BeanPropertySqlParameterSource(author);
         return namedParameterJdbcTemplate.queryForObject
                 (GET_COUNT_OF_AUTHORS_BOOKS_SQL,source,Integer.class);
@@ -128,10 +150,14 @@ public class AuthorDaoH2Impl implements AuthorDao {
 
     @Override
     public double getAverageRatingOfAuthorsBooks(Author author) {
+        LOGGER.debug("getAverageRatingOfAuthorsBooks(): "+ author);
+
+
         SqlParameterSource source = new BeanPropertySqlParameterSource(author);
         Double average = namedParameterJdbcTemplate.queryForObject
                 (GET_AVERAGE_RATING_OF_AUTHORS_BOOKS_SQL,source,Double.class);
         if(average==null) throw new IllegalArgumentException();
+
         return average;
     }
 

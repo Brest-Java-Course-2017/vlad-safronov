@@ -5,6 +5,8 @@ import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
 import com.vladsafronov.librarymanagement.service.api.BookService;
 import com.vladsafronov.librarymanagement.service.impl.integration.ServiceErrorMessages;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
@@ -17,6 +19,8 @@ import static com.vladsafronov.librarymanagement.service.impl.integration.Valida
  */
 public class BookServiceImpl implements BookService {
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
     BookDao bookDao;
 
     public static final LocalDate MIN_DATE = LocalDate.parse("0000-01-01");
@@ -27,11 +31,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getAllBooks() {
+        LOGGER.debug("getAllBooks()");
+
         return bookDao.getAllBooks();
     }
 
     @Override
     public List<Book> getBooksByAuthor(Author author) {
+        LOGGER.debug("getBooksByAuthor(): "+author);
+
         Assert.notNull(author);
         Assert.notNull(author.getId());
         //TODO need to check id by authorDao?
@@ -43,6 +51,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getBookById(Integer id) {
+        LOGGER.debug("getBookById(): "+id);
+
         Assert.notNull(id);
         validateId(id);
 
@@ -55,6 +65,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getBooksFromPeriod(LocalDate from, LocalDate to) {
+        LOGGER.debug("getBooksFromPeriod(): from "+from+" to "+to);
+
         if(from == null){
             from = MIN_DATE;
         }
@@ -72,12 +84,16 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getBookByTitle(String title) {
+        LOGGER.debug("getBookByTitle(): "+title);
+
         Assert.hasText(title);
         return bookDao.getBookByTitle(title);
     }
 
     @Override
     public int updateBook(Book book) {
+        LOGGER.debug("updateBook():"+book);
+
         Assert.notNull(book);
         Assert.notNull(book.getId());
         Assert.hasText(book.getTitle());
@@ -90,6 +106,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBookById(Integer id) {
+        LOGGER.debug("deleteBookById(): id = "+id);
+
         Assert.notNull(id);
         validateId(id);
 
@@ -98,6 +116,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void addBook(Book book) {
+        LOGGER.debug("addBook(): "+book);
+
         Assert.notNull(book);
         Assert.isNull(book.getId());
         Assert.hasText(book.getTitle());

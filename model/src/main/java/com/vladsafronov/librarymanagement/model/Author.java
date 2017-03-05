@@ -27,6 +27,8 @@ public class Author {
         return id;
     }
 
+
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -75,5 +77,15 @@ public class Author {
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", birthDate=" + birthDate +
+                '}';
     }
 }

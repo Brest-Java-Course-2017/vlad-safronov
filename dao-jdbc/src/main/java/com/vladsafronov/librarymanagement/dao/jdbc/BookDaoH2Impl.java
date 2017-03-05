@@ -3,6 +3,8 @@ package com.vladsafronov.librarymanagement.dao.jdbc;
 import com.vladsafronov.librarymanagement.dao.api.BookDao;
 import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,6 +26,8 @@ import java.util.Map;
  * BookDao h2 implementation
  */
 public class BookDaoH2Impl implements BookDao {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -64,23 +68,30 @@ public class BookDaoH2Impl implements BookDao {
 
 
     public List<Book> getAllBooks() {
+        LOGGER.debug("getAllBooks()");
 
         return  jdbcTemplate.query(GET_ALL_BOOKS_SQL,new BookRowMapper());
     }
 
     public List<Book> getBooksByAuthor(Author author) {
+        LOGGER.debug("getBooksByAuthor()"+author);
+
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(author);
         return namedParameterJdbcTemplate.query(GET_BOOK_BY_AUTHOR_SQL,sqlParameterSource,new BookRowMapper());
     }
 
     public Book getBookById(Integer id) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id",id);
+        LOGGER.debug("getBookById(): id = "+ id);
+
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID,id);
         return namedParameterJdbcTemplate.queryForObject
                 (GET_BOOK_BY_ID_SQL,sqlParameterSource,new BookRowMapper());
     }
 
     @Override
     public List<Book> getBooksFromPeriod(LocalDate from, LocalDate to) {
+        LOGGER.debug("getBooksFromPeriod(): from "+from+" to " + to);
+
         Map<String,Object> source = new HashMap<>();
         source.put("from",from);
         source.put("to",to);
@@ -89,12 +100,16 @@ public class BookDaoH2Impl implements BookDao {
     }
 
     public Book getBookByTitle(String title) {
+        LOGGER.debug("getBookByTitle(): title = "+ title);
+
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(TITLE,title);
         return namedParameterJdbcTemplate.queryForObject
                 (GET_BOOK_BY_TITLE_SQL,sqlParameterSource,new BookRowMapper());
     }
 
     public int updateBook(Book book) {
+        LOGGER.debug("updateBook(): "+ book);
+
         SqlParameterSource source = new BeanPropertySqlParameterSource(book);
 
         return namedParameterJdbcTemplate.update
@@ -102,6 +117,8 @@ public class BookDaoH2Impl implements BookDao {
     }
 
     public void deleteBookById(Integer id) {
+        LOGGER.debug("deleteBookById(): "+ id);
+
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID,id);
         namedParameterJdbcTemplate.update(DELETE_BOOK_FROM_BOOK_AUTHOR_SQL,sqlParameterSource);
         if(namedParameterJdbcTemplate.update(DELETE_BOOK_BY_ID_SQL,sqlParameterSource)!=1){
@@ -110,17 +127,23 @@ public class BookDaoH2Impl implements BookDao {
     }
 
     public void addBook(Book book) {
+        LOGGER.debug("addBook():  "+ book);
+
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(book);
         namedParameterJdbcTemplate.update
                 (ADD_BOOK_SQL,sqlParameterSource);
     }
 
     public int getCountOfBookWithTitle(String title) {
+        LOGGER.debug("getCountOfBookWithTitle(): title = " + title);
+
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(TITLE,title);
         return namedParameterJdbcTemplate.queryForObject(GET_COUNT_OF_BOOK_WITH_TITLE_SQL,sqlParameterSource,Integer.class);
     }
 
     public int getCountOfAllBooks(){
+        LOGGER.debug("getCountOfAllBooks()");
+
         return jdbcTemplate.queryForObject(GET_COUNT_OF_ALL_BOOKS,Integer.class);
     }
 

@@ -5,6 +5,8 @@ import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
 import com.vladsafronov.librarymanagement.service.api.AuthorService;
 import com.vladsafronov.librarymanagement.service.impl.integration.ServiceErrorMessages;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ import static com.vladsafronov.librarymanagement.service.impl.integration.Valida
  */
 public class AuthorServiceImpl implements AuthorService{
 
+    private static final Logger LOGGER = LogManager.getLogger();
 
     AuthorDao authorDao;
 
@@ -28,11 +31,14 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     public List<Author> getAllAuthors() {
+        LOGGER.debug("getAllAuthors()");
+
         return authorDao.getAllAuthors();
     }
 
     @Override
     public Author getAuthorById(Integer id) {
+        LOGGER.debug("getAuthorById(): id = " + id);
 
         Assert.notNull(id);
         validateId(id);
@@ -46,6 +52,8 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     public Author getAuthorByBook(Book book) {
+        LOGGER.debug("getAuthorByBook(): "+ book);
+
         Assert.notNull(book);
         Assert.notNull(book.getId());
         Assert.hasText(book.getTitle());
@@ -55,6 +63,8 @@ public class AuthorServiceImpl implements AuthorService{
     }
 
     public void addAuthor(Author author) {
+        LOGGER.debug("addAuthor(): "+ author);
+
         Assert.notNull(author);
         Assert.isNull(author.getId());
         Assert.hasText(author.getName());
@@ -65,6 +75,8 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     public void deleteAuthorById(Integer id) {
+        LOGGER.debug("deleteAuthorById(): "+ id);
+
         Assert.notNull(id);
         validateId(id);
 
@@ -73,6 +85,8 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     public int updateAuthor(Author author) {
+        LOGGER.debug("updateAuthor(): "+ author);
+
         Assert.notNull(author);
         Assert.notNull(author.getId());
         Assert.hasText(author.getName());
@@ -85,6 +99,8 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     public int getCountOfAuthorsBooks(Author author) {
+        LOGGER.debug("getCountOfAuthorsBooks(): "+author);
+
         Assert.notNull(author);
         Assert.notNull(author.getId());
         validateId(author.getId());
@@ -94,6 +110,8 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     public double getAverageRatingOfAuthorsBooks(Author author) {
+        LOGGER.debug("getAverageRatingOfAuthorsBooks(): "+author);
+
         Assert.notNull(author);
         Assert.notNull(author.getId());
         validateId(author.getId());

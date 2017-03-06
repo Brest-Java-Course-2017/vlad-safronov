@@ -50,8 +50,8 @@ public class BookDaoH2Impl implements BookDao {
     private String ADD_BOOK_SQL;
     @Value("${BookDao.sql.getCountOfBookWithTitle}")
     private String GET_COUNT_OF_BOOK_WITH_TITLE_SQL;
-    @Value("${BookDao.sql.getBookByAuthor}")
-    private String GET_BOOK_BY_AUTHOR_SQL;
+    @Value("${BookDao.sql.getBookByAuthorId}")
+    private String GET_BOOK_BY_AUTHOR_ID_SQL;
     @Value("${BookDao.sql.getCountOfAllBooks}")
     private String GET_COUNT_OF_ALL_BOOKS;
 
@@ -73,11 +73,11 @@ public class BookDaoH2Impl implements BookDao {
         return  jdbcTemplate.query(GET_ALL_BOOKS_SQL,new BookRowMapper());
     }
 
-    public List<Book> getBooksByAuthor(Author author) {
-        LOGGER.debug("getBooksByAuthor()"+author);
+    public List<Book> getBooksByAuthorId(Integer authorId) {
+        LOGGER.debug("getBooksByAuthorId(): authorID = "+authorId);
 
-        SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(author);
-        return namedParameterJdbcTemplate.query(GET_BOOK_BY_AUTHOR_SQL,sqlParameterSource,new BookRowMapper());
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID,authorId);
+        return namedParameterJdbcTemplate.query(GET_BOOK_BY_AUTHOR_ID_SQL,sqlParameterSource,new BookRowMapper());
     }
 
     public Book getBookById(Integer id) {

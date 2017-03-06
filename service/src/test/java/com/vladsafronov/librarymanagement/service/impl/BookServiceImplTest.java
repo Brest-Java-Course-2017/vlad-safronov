@@ -189,13 +189,13 @@ public class BookServiceImplTest {
     }
     @Test
     public void getBooksByAuthorTest(){
-        List<Book> books = bookService.getBooksByAuthor(firstAuthor);
+        List<Book> books = bookService.getBooksByAuthorId(firstAuthor.getId());
         assertNotNull(books);
         assertEquals(2,books.size());
         assertNotEquals(-1, books.indexOf(firstBook));
         assertNotEquals(-1,books.indexOf(thirdBook));
 
-        books = bookService.getBooksByAuthor(secondAuthor);
+        books = bookService.getBooksByAuthorId(secondAuthor.getId());
         assertNotNull(books);
         assertEquals(2,books.size());
         assertNotEquals(-1, books.indexOf(secondBook));
@@ -203,7 +203,7 @@ public class BookServiceImplTest {
     }
     @Test
     public void getNoBooksByAuthor(){
-        List<Book> books = bookService.getBooksByAuthor(thirdAuthor);
+        List<Book> books = bookService.getBooksByAuthorId(thirdAuthor.getId());
         assertEquals(0,books.size());
     }
 

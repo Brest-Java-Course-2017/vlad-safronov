@@ -37,16 +37,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getBooksByAuthor(Author author) {
-        LOGGER.debug("getBooksByAuthor(): "+author);
+    public List<Book> getBooksByAuthorId(Integer authorId) {
+        LOGGER.debug("getBooksByAuthorId(): authorId="+authorId);
 
-        Assert.notNull(author);
-        Assert.notNull(author.getId());
-        //TODO need to check id by authorDao?
-        Assert.hasText(author.getName());
-        Assert.hasText(author.getSurname());
+        Assert.notNull(authorId);
+        validateId(authorId);
 
-        return bookDao.getBooksByAuthor(author);
+
+        return bookDao.getBooksByAuthorId(authorId);
     }
 
     @Override

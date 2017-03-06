@@ -20,10 +20,10 @@ public interface BookDao {
     /**
      * Get books list, consisted of books, which was written by concrete author
      *
-     * @param author author object
+     * @param authorId author identifier
      * @return all books list,consisted of books, which was written by this author
      */
-    List<Book> getBooksByAuthor(Author author);
+    List<Book> getBooksByAuthorId(Integer authorId);
 
     /**
      * Get book by id

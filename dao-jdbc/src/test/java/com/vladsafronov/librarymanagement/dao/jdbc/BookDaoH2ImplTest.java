@@ -186,13 +186,13 @@ public class BookDaoH2ImplTest {
     }
     @Test
     public void getBooksByAuthorTest(){
-        List<Book> books = bookDao.getBooksByAuthor(firstAuthor);
+        List<Book> books = bookDao.getBooksByAuthorId(firstAuthor.getId());
         assertNotNull(books);
         assertEquals(2,books.size());
         assertNotEquals(-1, books.indexOf(firstBook));
         assertNotEquals(-1,books.indexOf(thirdBook));
 
-        books = bookDao.getBooksByAuthor(secondAuthor);
+        books = bookDao.getBooksByAuthorId(secondAuthor.getId());
         assertNotNull(books);
         assertEquals(2,books.size());
         assertNotEquals(-1, books.indexOf(secondBook));
@@ -200,7 +200,7 @@ public class BookDaoH2ImplTest {
     }
     @Test
     public void getNoBooksByAuthor(){
-        List<Book> books = bookDao.getBooksByAuthor(thirdAuthor);
+        List<Book> books = bookDao.getBooksByAuthorId(thirdAuthor.getId());
         assertEquals(0,books.size());
     }
 

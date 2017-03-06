@@ -58,41 +58,22 @@ public class BookServiceMockImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void getBooksByNullAuthor() {
+    public void getBooksByNullAuthorId() {
         replay(mockBookDao);
-        Author author = null;
-        bookService.getBooksByAuthor(author);
+        Integer id = null;
+        bookService.getBooksByAuthorId(id);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void getBooksByAuthorWithNullId() {
-        replay(mockBookDao);
-        Author author = new Author(null, "bla", "bla", LocalDate.now());
-        bookService.getBooksByAuthor(author);
-    }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void getBooksByAuthorWithNullName() {
-        replay(mockBookDao);
-        Author author = new Author(1, null, "bla", LocalDate.now());
-        bookService.getBooksByAuthor(author);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void getBooksByAuthorWithNullSurname() {
-        replay(mockBookDao);
-        Author author = new Author(1, "bla", null, LocalDate.now());
-        bookService.getBooksByAuthor(author);
-    }
 
     @Test
-    public void getBooksByAuthor() {
+    public void getBooksByAuthorId() {
         List<Book> books = new ArrayList<>();
-        Author author = new Author(1, "bla", "bla", LocalDate.now());
-        expect(mockBookDao.getBooksByAuthor(author)).andReturn(books);
+        Integer id = 1;
+        expect(mockBookDao.getBooksByAuthorId(id)).andReturn(books);
         replay(mockBookDao);
 
-        List<Book> booksFromService = bookService.getBooksByAuthor(author);
+        List<Book> booksFromService = bookService.getBooksByAuthorId(id);
         Assert.assertEquals(books, booksFromService);
     }
 

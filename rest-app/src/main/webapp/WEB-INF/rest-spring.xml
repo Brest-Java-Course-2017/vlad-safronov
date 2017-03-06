@@ -25,6 +25,7 @@
                 <value>classpath:bookdao-sql-querries.properties</value>
                 <value>classpath:authordao-sql-querries.properties</value>
                 <value>classpath:database.properties</value>
+                <value>classpath:application.properties</value>
             </list>
         </property>
     </bean>

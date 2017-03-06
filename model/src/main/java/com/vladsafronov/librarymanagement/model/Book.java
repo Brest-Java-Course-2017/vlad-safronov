@@ -1,5 +1,10 @@
 package com.vladsafronov.librarymanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,13 +27,20 @@ public class Book {
         this.language = language;
     }
 
+
     public Book() {
 
     }
 
+    @JsonProperty(value="releaseDate")
     public String getStrReleaseDate(){
-        return releaseDate.format(DateTimeFormatter.BASIC_ISO_DATE);
+        return releaseDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
+    @JsonProperty(value="releaseDate")
+    public void setStrReleaseDate(String date){
+        releaseDate = LocalDate.parse(date);
+    }
+
     public Integer getId() {
         return id;
     }
@@ -52,7 +64,7 @@ public class Book {
     public void setRating(Integer rating) {
         this.rating = rating;
     }
-
+    @JsonIgnore
     public LocalDate getReleaseDate() {
         return releaseDate;
     }

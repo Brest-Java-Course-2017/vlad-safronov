@@ -1,14 +1,12 @@
 package com.vladsafronov.librarymanagement.rest;
 
+import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
 import com.vladsafronov.librarymanagement.service.api.BookService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -43,7 +41,7 @@ public class BookController {
         return bookService.getBookByTitle(title);
     }
 
-    @RequestMapping(value="/book/{id}/delete")
+    @RequestMapping(value="/book/{id}",method = RequestMethod.DELETE)
     public void deleteBookById(@PathVariable Integer id){
         LOGGER.debug("deleteBookById(): id = " + id);
         bookService.deleteBookById(id);
@@ -56,5 +54,25 @@ public class BookController {
         LOGGER.debug("getBookFromPeriod(): from="+from+" to="+to);
         return bookService.getBooksFromPeriod(LocalDate.parse(from),LocalDate.parse(to));
     }
+
+    @RequestMapping(value="/books",method = RequestMethod.PUT)
+    public int updateBook(@RequestBody Book book){
+        LOGGER.debug("updateBook(): "+ book);
+        return bookService.updateBook(book);
+    }
+
+
+    @RequestMapping(value="/books",method = RequestMethod.POST)
+    public void addBook(@RequestBody Book book){
+        LOGGER.debug("addBook(): "+book);
+        bookService.addBook(book);
+    }
+    @RequestMapping(value="author/{id}/books",method = RequestMethod.GET)
+    public List<Book> getBooksByAuthorId(@PathVariable Integer id){
+        //FIXME NOT ERROR WHEN SEND INVALID ID
+        LOGGER.debug("getBooksByAuthorId: id = " + id);
+        return bookService.getBooksByAuthorId(id);
+    }
+
 
 }

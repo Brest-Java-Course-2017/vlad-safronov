@@ -39,10 +39,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getBooksByAuthorId(Integer authorId) {
         LOGGER.debug("getBooksByAuthorId(): authorId="+authorId);
+        //FIXME If author not exist return empty list
 
         Assert.notNull(authorId);
         validateId(authorId);
-
 
         return bookDao.getBooksByAuthorId(authorId);
     }

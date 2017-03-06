@@ -127,7 +127,7 @@ public class BookDaoH2ImplTest {
     @Test
     public void deleteBookByUnexistIdTest(){
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
+        thrown.expectMessage(DaoErrorMessages.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
         bookDao.deleteBookById(COUNT_OF_BOOKS+1);
     }
 

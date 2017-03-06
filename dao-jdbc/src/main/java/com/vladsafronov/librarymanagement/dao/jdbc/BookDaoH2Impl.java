@@ -1,7 +1,6 @@
 package com.vladsafronov.librarymanagement.dao.jdbc;
 
 import com.vladsafronov.librarymanagement.dao.api.BookDao;
-import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -122,7 +121,7 @@ public class BookDaoH2Impl implements BookDao {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(ID,id);
         namedParameterJdbcTemplate.update(DELETE_BOOK_FROM_BOOK_AUTHOR_SQL,sqlParameterSource);
         if(namedParameterJdbcTemplate.update(DELETE_BOOK_BY_ID_SQL,sqlParameterSource)!=1){
-            throw new IllegalArgumentException(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
+            throw new IllegalArgumentException(DaoErrorMessages.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
         }
     }
 

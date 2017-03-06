@@ -1,6 +1,6 @@
 package com.vladsafronov.librarymanagement.service.impl;
 
-import com.vladsafronov.librarymanagement.dao.jdbc.DaoErrors;
+import com.vladsafronov.librarymanagement.dao.jdbc.DaoErrorMessages;
 import com.vladsafronov.librarymanagement.model.Author;
 import com.vladsafronov.librarymanagement.model.Book;
 import com.vladsafronov.librarymanagement.service.api.BookService;
@@ -126,7 +126,7 @@ public class BookServiceImplTest {
     @Test
     public void deleteBookByUnexistIdTest(){
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
+        thrown.expectMessage(DaoErrorMessages.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
         bookService.deleteBookById(COUNT_OF_BOOKS+1);
     }
 

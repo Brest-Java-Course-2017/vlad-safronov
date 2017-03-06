@@ -127,7 +127,7 @@ public class AuthorDaoH2Impl implements AuthorDao {
         SqlParameterSource source = new MapSqlParameterSource(ID,id);
         int count = namedParameterJdbcTemplate.update(DELETE_AUTHOR_BY_ID_SQL,source);
         if(count==0){
-            throw new IllegalArgumentException(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
+            throw new IllegalArgumentException(DaoErrorMessages.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
         }
     }
 

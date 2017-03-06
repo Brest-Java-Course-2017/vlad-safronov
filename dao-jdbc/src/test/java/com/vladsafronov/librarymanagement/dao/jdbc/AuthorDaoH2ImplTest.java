@@ -139,7 +139,7 @@ public class AuthorDaoH2ImplTest {
     @Test
     public void deleteAuthorWithBiggerThenCountOfAuthorsId(){
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(DaoErrors.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
+        thrown.expectMessage(DaoErrorMessages.ELEMENT_WITH_SUCH_ID_ISNT_EXIST);
 
         authorDao.deleteAuthorById(COUNT_OF_AUTHORS+1);
     }
